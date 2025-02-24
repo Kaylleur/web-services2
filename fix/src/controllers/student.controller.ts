@@ -1,9 +1,9 @@
-import { Controller, Get, Post, Delete, Param, Body, UseGuards, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { StudentService } from '../services/student.service';
 import { CreateStudentDto } from '../dto/student.dto';
 import { StudentEntity } from '../entities/student.entity';
 import { EnrollmentEntity } from '../entities/enrollment.entity';
-import { AuthGuard } from '../guards/auth.guards';
+import { BasicAuthGuard } from '../guards/basic-auth.guard';
 
 @Controller('students')
 export class StudentController {
@@ -33,6 +33,7 @@ export class StudentController {
   }
 
   @Post(':id/courses')
+  @UseGuards(BasicAuthGuard)
   async enroll(@Param('id') id: string, @Body('courseId') courseId: string): Promise<EnrollmentEntity> {
     return this.studentService.enroll(id, courseId);
   }

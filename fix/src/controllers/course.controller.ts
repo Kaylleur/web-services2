@@ -1,11 +1,9 @@
-import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Param, Body, UseGuards, ParseUUIDPipe } from '@nestjs/common';
 import { CourseService } from '../services/course.service';
 import { CreateCourseDto } from '../dto/course.dto';
 import { CourseEntity } from '../entities/course.entity';
-import { AuthGuard } from '../guards/auth.guards';
 
 @Controller('courses')
-@UseGuards(AuthGuard)
 export class CourseController {
   constructor(private readonly courseService: CourseService) {}
 

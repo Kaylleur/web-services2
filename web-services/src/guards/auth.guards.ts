@@ -1,7 +1,8 @@
-import { CanActivate, ExecutionContext, UnauthorizedException } from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { StudentService } from '../services/student.service';
 import { Observable } from 'rxjs';
 
+@Injectable()
 export class AuthGuard implements CanActivate {
 
   constructor(
@@ -16,9 +17,6 @@ export class AuthGuard implements CanActivate {
     }
     const token = bearerToken.split(' ')[1];
     const student = this.studentService.getStudentByToken(token);
-    if (!student) {
-      return false;
-    }
-    return true;
+    return !!student;
   }
 }

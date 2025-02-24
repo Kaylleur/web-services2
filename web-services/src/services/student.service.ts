@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { StudentEntity } from '../entities/student.entity';
 import { CreateStudentDto } from '../dto/student.dto';
 import { EnrollmentEntity } from '../entities/enrollment.entity';
-import { hashSync } from 'bcrypt';
+import { compare, hashSync } from 'bcrypt';
 import { LoginQueryDto } from '../dto/auth.dto';
 import { JwtService } from '@nestjs/jwt';
 
@@ -19,8 +19,11 @@ export class StudentService {
     ) {
     }
 
-    async findAll(): Promise<StudentEntity[]> {
-        return this.studentRepository.find({ relations: ['enrollments', 'enrollments.course'] });
+    async findAll(params: {
+        limit: number;
+        skip: number;
+    }): Promise<StudentEntity[]> {
+        return this.studentRepository.find({ relations: ['enrollments', 'enrollments.course'], skip: params.skip, take: params.limit });
     }
 
     async findOne(id: string): Promise<StudentEntity> {
@@ -29,8 +32,7 @@ export class StudentService {
 
     async create(createStudentDto: CreateStudentDto): Promise<StudentEntity> {
         const password = hashSync(createStudentDto.password, 10);
-        const student = this.studentRepository.create({ ...createStudentDto, password });
-        return this.studentRepository.save(student);
+        return this.studentRepository.save({ ...createStudentDto, password });
     }
 
     async delete(id: string): Promise<void> {
@@ -50,12 +52,15 @@ export class StudentService {
     }
 
     async login(loginQuery: LoginQueryDto) {
-        const password = hashSync(loginQuery.password, 10);
         const student = await this.studentRepository.findOne({
-            where: { email: loginQuery.email, password },
-            select: ['id'],
+            where: { email: loginQuery.email },
+            select: ['id', 'password'],
         });
         if (!student) {
+            throw new NotFoundException('Invalid email or password');
+        }
+        const isValid = await compare(loginQuery.password, student.password)
+        if(!isValid) {
             throw new NotFoundException('Invalid email or password');
         }
         return this.generateTokens(student.id);
@@ -65,7 +70,7 @@ export class StudentService {
         const payload = { sub: studentId };
         return {
             access_token: this.jwtService.sign(payload, {
-                expiresIn: '120s',
+                expiresIn: '1200s',
                 secret: 'super-secret',
             }),
             refresh_token: this.jwtService.sign(payload, {
@@ -77,7 +82,7 @@ export class StudentService {
 
     async refresh(refreshToken: string) {
         const payload = this.jwtService.verify(refreshToken, { secret: 'super-very-strong-secret' });
-        return this.getEnrollments(payload.sub);
+        return this.generateTokens(payload.sub);
     }
 
     async getStudentByToken(token?: string) {
@@ -87,7 +92,6 @@ export class StudentService {
         const payload = await this.jwtService.verify(token, {
             secret: 'super-secret',
         })
-        const student = await this.studentRepository.findOne(payload.sub);
-        return student;
+        return this.studentRepository.findOne({where:{id:payload.sub}});
     }
 }

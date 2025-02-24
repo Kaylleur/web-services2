@@ -8,7 +8,7 @@ import { EnrollmentEntity } from './entities/enrollment.entity';
 import { StudentController } from './controllers/student.controller';
 import { CourseController } from './controllers/course.controller';
 import { JwtModule } from '@nestjs/jwt';
-import { AuthController } from './controllers/auth.controller';
+import { BasicAuthGuard } from './guards/basic-auth.guard';
 
 @Module({
     imports: [
@@ -25,8 +25,8 @@ import { AuthController } from './controllers/auth.controller';
         }),
         TypeOrmModule.forFeature([CourseEntity, StudentEntity, EnrollmentEntity]),
     ],
-    controllers: [StudentController, CourseController, AuthController],
-    providers: [CourseService, StudentService],
+    controllers: [StudentController, CourseController],
+    providers: [CourseService, StudentService, BasicAuthGuard],
 })
 export class AppModule {
 }
