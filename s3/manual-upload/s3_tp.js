@@ -4,8 +4,8 @@ const fs = require('fs');
 // Configuration du client S3 pour MinIO
 const s3 = new AWS.S3({
     endpoint: 'http://localhost:9000',
-    accessKeyId: 'admin',
-    secretAccessKey: 'password',
+    accessKeyId: 'minioadmin',
+    secretAccessKey: 'minioadmin',
     s3ForcePathStyle: true, // Nécessaire pour MinIO
 });
 

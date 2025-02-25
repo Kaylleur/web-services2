@@ -10,8 +10,8 @@ const upload = multer({ dest: 'uploads/' });
 // Configuration du client S3 pour MinIO
 const s3 = new AWS.S3({
     endpoint: 'http://localhost:9000',
-    accessKeyId: 'admin',
-    secretAccessKey: 'password',
+    accessKeyId: 'minioadmin',
+    secretAccessKey: 'minioadmin',
     s3ForcePathStyle: true, // Nécessaire pour MinIO
 });
 
@@ -44,14 +44,51 @@ app.get('/', (req, res) => {
 app.post('/upload', upload.single('file'), (req, res) => {
     const fileContent = fs.readFileSync(req.file.path);
 
-    console.log('should upload to s3', req.file.originalname);
+    // Paramètres pour l'upload vers S3
+    const params = {
+        Bucket: bucketName,
+        Key: req.file.originalname,
+        Body: fileContent,
+    };
+
+    // Uploader le fichier sur S3
+    s3.putObject(params, function (err, data) {
+        // Supprimer le fichier temporaire
+        fs.unlinkSync(req.file.path);
+
+        if (err) {
+            console.log('Erreur lors de l\'upload du fichier:', err);
+            res.status(500).send('Erreur lors de l\'upload du fichier');
+        } else {
+            console.log('Fichier uploadé avec succès:', data);
+            res.send('Fichier uploadé avec succès');
+        }
+    });
 });
 
 // Nouveau endpoint pour télécharger un fichier depuis S3
 // /download/:fileName
 app.get('/download/:fileName', (req, res) => {
     const fileName = req.params.fileName;
-    console.log('should download from s3', fileName);
+
+    const params = {
+        Bucket: bucketName,
+        Key: fileName,
+    };
+
+    s3.getObject(params, (err, data) => {
+        if (err) {
+            console.log('Erreur lors du téléchargement du fichier:', err);
+            res.status(500).send('Erreur lors du téléchargement du fichier');
+        } else {
+            // Option 1: Envoyer le contenu du fichier directement
+            // res.send(data.Body.toString());
+
+            // Option 2: Télécharger le fichier en tant que pièce jointe
+            res.setHeader('Content-Disposition', 'attachment; filename=' + fileName);
+            res.send(data.Body);
+        }
+    });
 });
 
 // Démarrer le serveur
