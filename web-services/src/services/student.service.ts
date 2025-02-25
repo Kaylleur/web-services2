@@ -51,7 +51,10 @@ export class StudentService {
         return this.enrollmentRepository.find({ where: { student: { id } }, relations: ['course', 'student'] });
     }
 
-    async login(loginQuery: LoginQueryDto) {
+    async login(loginQuery: LoginQueryDto): Promise<{
+        access_token: string,
+        refresh_token: string
+    }> {
         const student = await this.studentRepository.findOne({
             where: { email: loginQuery.email },
             select: ['id', 'password'],
@@ -66,7 +69,10 @@ export class StudentService {
         return this.generateTokens(student.id);
     }
 
-    private generateTokens(studentId: string) {
+    private generateTokens(studentId: string): {
+        access_token: string,
+        refresh_token: string
+    } {
         const payload = { sub: studentId };
         return {
             access_token: this.jwtService.sign(payload, {
