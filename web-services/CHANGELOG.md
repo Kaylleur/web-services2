@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/Kaylleur/web-services2/compare/v1.1.0...v1.2.0) (2025-02-25)
+
+
+### Features
+
+* start of swagger 2 ([a3dd5d7](https://github.com/Kaylleur/web-services2/commit/a3dd5d7f644c181699993c6c9014f39b1243990c))
+
 ## 1.1.0 (2025-02-25)
 
 
