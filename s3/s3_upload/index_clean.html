@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload et téléchargement de fichier vers S3</title>
+</head>
+<body>
+<h1>Uploader un fichier vers S3</h1>
+<form id="uploadForm" enctype="multipart/form-data">
+    <input type="file" name="file" id="fileInput" />
+    <button type="button" onclick="uploadFile()">Uploader</button>
+</form>
+
+<h2>Télécharger un fichier depuis S3</h2>
+<input type="text" placeholder="nom du fichier" id="name" />
+<button type="button" onclick="downloadFile()">Télécharger le fichier</button>
+
+<script>
+    function uploadFile() {
+       console.log('should upload')
+    }
+
+    function downloadFile() {
+        console.log('should download')
+    }
+</script>
+</body>
+</html>
