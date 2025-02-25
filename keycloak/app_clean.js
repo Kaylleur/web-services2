@@ -39,6 +39,7 @@ app.get('/', (req, res) => {
 app.get('/login', (req, res) => {
     console.log('redirecting user to Keycloak for login');
 });
+
 app.get('/callback', (req, res) => {
    console.log('should require receive a code then get access token and set them in cookies')
 });
