@@ -30,7 +30,7 @@ server.on('stream', (stream, headers) => {
             'content-type': 'application/javascript'
         });
     } else if (reqPath === '/time') {
-        // Configurer les en-têtes pour SSE (sans l'en-tête 'connection')
+        // Configurer les en-têtes pour SSE (sans l'en-tête 'connection') Server Sent Event
         stream.respond({
             'content-type': 'text/event-stream',
             'cache-control': 'no-cache',
