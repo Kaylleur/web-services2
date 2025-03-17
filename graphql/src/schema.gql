@@ -31,12 +31,17 @@ type EnrollmentType {
   course: CourseType!
 }
 
+type AuthResponse {
+  accessToken: String!
+}
+
 type Query {
   courses: [CourseType!]!
   course(id: String!): CourseType
   enrollments: [EnrollmentType!]!
   students: [StudentType!]!
   student(id: String!): StudentType
+  whoAmI: StudentType!
 }
 
 type Mutation {
@@ -47,6 +52,7 @@ type Mutation {
   createStudent(input: CreateStudentInput!): StudentType!
   updateStudent(id: String!, input: UpdateStudentInput!): StudentType
   deleteStudent(id: String!): Boolean!
+  login(input: LoginInput!): AuthResponse!
 }
 
 input CreateCourseInput {
@@ -80,4 +86,9 @@ input UpdateStudentInput {
   lastName: String
   email: String
   password: String
+}
+
+input LoginInput {
+  email: String!
+  password: String!
 }

@@ -9,6 +9,7 @@ import { CourseResolver } from './resolvers/course.resolver';
 import { EnrollmentResolver } from './resolvers/enrollment.resolver';
 import { StudentResolver } from './resolvers/student.resolver';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
     imports: [
@@ -27,6 +28,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
             driver: ApolloDriver
         }),
         TypeOrmModule.forFeature([CourseEntity, StudentEntity, EnrollmentEntity]),
+        AuthModule,
     ],
     providers: [
       CourseResolver,

@@ -8,6 +8,7 @@ import { UpdateStudentInput } from './dto/update-student.input';
 
 import { ObjectType, Field, ID } from '@nestjs/graphql';
 import { EnrollmentType } from './enrollment.resolver';
+import { GqlAuthGuard } from '../auth/gql-auth.guard';
 
 @ObjectType()
 export class StudentType {
