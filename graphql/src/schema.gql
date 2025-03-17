@@ -1,0 +1,83 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type CourseType {
+  id: ID!
+  name: String!
+  description: String
+  startDate: DateTime!
+  endDate: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type StudentType {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  email: String!
+  registrationDate: DateTime!
+  enrollments: [EnrollmentType!]
+}
+
+type EnrollmentType {
+  id: ID!
+  enrollmentDate: DateTime!
+  student: StudentType!
+  course: CourseType!
+}
+
+type Query {
+  courses: [CourseType!]!
+  course(id: String!): CourseType
+  enrollments: [EnrollmentType!]!
+  students: [StudentType!]!
+  student(id: String!): StudentType
+}
+
+type Mutation {
+  createCourse(input: CreateCourseInput!): CourseType!
+  updateCourse(id: String!, input: UpdateCourseInput!): CourseType!
+  deleteCourse(id: String!): Boolean!
+  createEnrollment(input: CreateEnrollmentInput!): EnrollmentType!
+  createStudent(input: CreateStudentInput!): StudentType!
+  updateStudent(id: String!, input: UpdateStudentInput!): StudentType
+  deleteStudent(id: String!): Boolean!
+}
+
+input CreateCourseInput {
+  name: String!
+  description: String
+  startDate: DateTime!
+  endDate: DateTime!
+}
+
+input UpdateCourseInput {
+  name: String
+  description: String
+  startDate: DateTime
+  endDate: DateTime
+}
+
+input CreateEnrollmentInput {
+  studentId: String!
+  courseId: String!
+}
+
+input CreateStudentInput {
+  firstName: String!
+  lastName: String!
+  email: String!
+  password: String!
+}
+
+input UpdateStudentInput {
+  firstName: String
+  lastName: String
+  email: String
+  password: String
+}
