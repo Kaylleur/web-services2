@@ -157,43 +157,43 @@ function testListStudents(callback) {
 // -------------------------------------------------------------------
 // 4. Enchaîner les tests dans un "main" simple
 // -------------------------------------------------------------------
-// function runAllTests() {
-//   console.log('=== Lancement des tests CRUD Student ===');
-//   // 1) Create
-//   testCreateStudent((err, createdStudent) => {
-//     if (err) return console.error('Echec testCreateStudent', err);
-//
-//     // 2) Get
-//     testGetStudent(createdStudent.id, (err, fetchedStudent) => {
-//       if (err) return console.error('Echec testGetStudent', err);
-//
-//       // 3) Update
-//       testUpdateStudent(fetchedStudent, (err, updatedStudent) => {
-//         if (err) return console.error('Echec testUpdateStudent', err);
-//
-//         // 4) Delete
-//         testDeleteStudent(updatedStudent.id, (err) => {
-//           if (err) return console.error('Echec testDeleteStudent', err);
-//
-//           // 5) List
-//           testListStudents((err) => {
-//             if (err) return console.error('Echec testListStudents', err);
-//
-//             console.log('=== Fin des tests CRUD Student ===');
-//             process.exit(0);
-//           });
-//         });
-//       });
-//     });
-//   });
-// }
+function runAllTests() {
+  console.log('=== Lancement des tests CRUD Student ===');
+  // 1) Create
+  testCreateStudent((err, createdStudent) => {
+    if (err) return console.error('Echec testCreateStudent', err);
+
+    // 2) Get
+    testGetStudent(createdStudent.id, (err, fetchedStudent) => {
+      if (err) return console.error('Echec testGetStudent', err);
+
+      // 3) Update
+      testUpdateStudent(fetchedStudent, (err, updatedStudent) => {
+        if (err) return console.error('Echec testUpdateStudent', err);
+
+        // 4) Delete
+        testDeleteStudent(updatedStudent.id, (err) => {
+          if (err) return console.error('Echec testDeleteStudent', err);
+
+          // 5) List
+          testListStudents((err) => {
+            if (err) return console.error('Echec testListStudents', err);
+
+            console.log('=== Fin des tests CRUD Student ===');
+            process.exit(0);
+          });
+        });
+      });
+    });
+  });
+}
 
 // -------------------------------------------------------------------
 // 5. Lancer le script
 // -------------------------------------------------------------------
-// runAllTests();
+runAllTests();
 
 
-testListStudents((err) => {
-  if(err) console.error(err)
-})
+// testListStudents((err) => {
+//   if(err) console.error(err)
+// })

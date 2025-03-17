@@ -1,0 +1,175 @@
+syntax = "proto3";
+
+package university;
+
+message Student {
+  string id = 1;
+  string firstName = 2;
+  string lastName = 3;
+  string email = 4;
+  // Vous pouvez gérer la date d'inscription sous forme de string
+  // ou utiliser google.protobuf.Timestamp
+  string registrationDate = 5;
+  string password = 6;
+}
+
+// Requête pour créer un nouvel étudiant
+message CreateStudentRequest {
+  string firstName = 1;
+  string lastName = 2;
+  string email = 3;
+  string password = 4;
+}
+
+// Réponse renvoyant un étudiant
+message StudentResponse {
+  Student student = 1;
+}
+
+// Requête pour récupérer un étudiant via son id
+message GetStudentRequest {
+  string id = 1;
+}
+
+// Requête pour mettre à jour un étudiant
+// Ici, on suppose que vous passez tous les champs (ou partiellement, selon vos besoins)
+message UpdateStudentRequest {
+  string id = 1;
+  string firstName = 2;
+  string lastName = 3;
+  string email = 4;
+  string password = 5;
+}
+
+// Requête pour supprimer un étudiant
+message DeleteStudentRequest {
+  string id = 1;
+}
+
+// Requête et réponse pour lister tous les étudiants
+message ListStudentsRequest {
+  int32 skip = 1;
+  int32 limit = 2;
+}
+
+message ListStudentsResponse {
+  repeated Student students = 1;
+}
+
+message Empty {}
+
+// Service CRUD sur Student
+service StudentService {
+  rpc CreateStudent (CreateStudentRequest) returns (StudentResponse);
+  rpc GetStudent    (GetStudentRequest)    returns (StudentResponse);
+  rpc UpdateStudent (UpdateStudentRequest) returns (StudentResponse);
+  rpc DeleteStudent (DeleteStudentRequest) returns (Empty);
+  rpc ListStudents  (ListStudentsRequest)  returns (ListStudentsResponse);
+}
+
+
+// -------------------------------------------------------------------
+// Messages relatifs à l'entité Course
+// -------------------------------------------------------------------
+message Course {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  string startDate = 4; // ou google.protobuf.Timestamp
+  string endDate = 5;   // idem
+}
+
+// Requête pour créer un nouveau cours
+message CreateCourseRequest {
+  string name = 1;
+  string description = 2;
+  string startDate = 3;
+  string endDate = 4;
+}
+
+message CourseResponse {
+  Course course = 1;
+}
+
+message GetCourseRequest {
+  string id = 1;
+}
+
+message UpdateCourseRequest {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  string startDate = 4;
+  string endDate = 5;
+}
+
+message DeleteCourseRequest {
+  string id = 1;
+}
+
+message ListCoursesRequest {}
+
+message ListCoursesResponse {
+  repeated Course courses = 1;
+}
+
+// Service CRUD sur Course
+service CourseService {
+  rpc CreateCourse (CreateCourseRequest) returns (CourseResponse);
+  rpc GetCourse    (GetCourseRequest)    returns (CourseResponse);
+  rpc UpdateCourse (UpdateCourseRequest) returns (CourseResponse);
+  rpc DeleteCourse (DeleteCourseRequest) returns (CourseResponse);
+  rpc ListCourses  (ListCoursesRequest)  returns (ListCoursesResponse);
+}
+
+
+// -------------------------------------------------------------------
+// Messages relatifs à l'entité Enrollment
+// -------------------------------------------------------------------
+message Enrollment {
+  string id = 1;
+  string enrollmentDate = 2; // ou google.protobuf.Timestamp
+  string studentId = 3;
+  string courseId = 4;
+}
+
+// Requête pour créer une nouvelle inscription
+message CreateEnrollmentRequest {
+  string studentId = 1;
+  string courseId = 2;
+}
+
+// Réponse renvoyant une inscription
+message EnrollmentResponse {
+  Enrollment enrollment = 1;
+}
+
+// Requête pour récupérer une inscription
+message GetEnrollmentRequest {
+  string id = 1;
+}
+
+message UpdateEnrollmentRequest {
+  string id = 1;
+  string studentId = 2;
+  string courseId = 3;
+}
+
+message DeleteEnrollmentRequest {
+  string id = 1;
+}
+
+message ListEnrollmentsRequest {}
+
+message ListEnrollmentsResponse {
+  repeated Enrollment enrollments = 1;
+}
+
+// Service CRUD sur Enrollment
+service EnrollmentService {
+  rpc CreateEnrollment (CreateEnrollmentRequest) returns (EnrollmentResponse);
+  rpc GetEnrollment    (GetEnrollmentRequest)    returns (EnrollmentResponse);
+  rpc UpdateEnrollment (UpdateEnrollmentRequest) returns (EnrollmentResponse);
+  rpc DeleteEnrollment (DeleteEnrollmentRequest) returns (EnrollmentResponse);
+  rpc ListEnrollments  (ListEnrollmentsRequest)  returns (ListEnrollmentsResponse);
+}
